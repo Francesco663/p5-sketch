@@ -29,10 +29,9 @@ let current_trial    = 0;      // the current trial number (indexes into trials 
 let attempt          = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 let fitts_IDs        = [];     // add the Fitts ID for each selection here (-1 when there is a miss)
 
-let hit_color = (0, 51, 51);
-let miss_color = (151, 0, 0);
-let begin_color = (0, 0, 0);
-let frame_color = begin_color;
+let frame_color_red = 0;
+let frame_color_green = 0;
+let frame_color_blue = 0;
 
 // Target class (position and width)
 class Target
@@ -63,8 +62,7 @@ function draw()
   if (draw_targets)
   {     
     // The user is interacting with the 6x3 target grid
-    background(color(frame_color));        // sets background to black
-    
+    background(color(frame_color_red, frame_color_green, frame_color_blue));  // CHANGE - sets background color
     // Print trial count at the top left-corner of the canvas
     fill(color(255,255,255));
     textAlign(LEFT);
@@ -166,8 +164,16 @@ function mousePressed()
       let virtual_x = map(mouseX, inputArea.x, inputArea.x + inputArea.w, 0, width)
       let virtual_y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height)
 
-      if (dist(target.x, target.y, virtual_x, virtual_y) < target.w/2){frame_color = hit_color; hits++;}
-      else {frame_color = miss_color; misses++;}
+      if (dist(target.x, target.y, virtual_x, virtual_y) < target.w/2){
+        frame_color_red = 0;
+        frame_color_green = 25;
+        frame_color_blue = 51;
+        hits++;}
+      else {       
+        frame_color_red = 51;
+        frame_color_green = 0;
+        frame_color_blue = 0;
+        misses++;}
       
       current_trial++;                 // Move on to the next trial/target
     }
@@ -273,8 +279,10 @@ function continueTest()
   draw_targets = true;
   testStartTime = millis();  
     
-  //CHANGE frame_color back to black
-  frame_color = begin_color;
+  //CHANGE background color back to black
+  frame_color_red = 51;
+  frame_color_green = 0;
+  frame_color_blue = 0;
 }
 
 // Is invoked when the canvas is resized (e.g., when we go fullscreen)
