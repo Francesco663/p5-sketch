@@ -29,6 +29,10 @@ let current_trial    = 0;      // the current trial number (indexes into trials 
 let attempt          = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 let fitts_IDs        = [];     // add the Fitts ID for each selection here (-1 when there is a miss)
 
+let hit_color = (0, 51, 25);
+let miss_color = (51, 0, 0);
+let begin_color = (0, 0, 0);
+let frame_color = begin_color;
 
 // Target class (position and width)
 class Target
@@ -59,7 +63,7 @@ function draw()
   if (draw_targets)
   {     
     // The user is interacting with the 6x3 target grid
-    background(color(0,0,0));        // sets background to black
+    background(color(frame_color));        // sets background to black
     
     // Print trial count at the top left-corner of the canvas
     fill(color(255,255,255));
@@ -183,9 +187,9 @@ function mousePressed()
         continue_button.mouseReleased(continueTest);
         continue_button.position(width/2 - continue_button.size().width/2, height/2 - continue_button.size().height/2);
       }
-    }
-    // Check if this was the first selection in an attempt
-    else if (current_trial === 1) testStartTime = millis();
+    } 
+	// Check if this was the first selection in an attempt  
+	else if (current_trial === 1) testStartTime = millis();
   }
 }
 
@@ -196,35 +200,49 @@ function drawTarget(i)
   let target = getTargetBounds(i);             
 
   // Check whether this target is the target the user should be trying to select
-  if (trials[current_trial] === i) 
-  { 
-    // Highlights the target the user should be trying to select
-    // with a white border
-    //CHANGE 1 - stroke color (white -> red)
-    //stroke(color(232,22,22));
-    //CHANGE 2 - stroke weight (2 -> 5)
-    //strokeWeight(5);
-    
-    //CHANGE 4 - current target color (white -> red)
+  if(trials[current_trial] === i && trials[current_trial + 1] === i) {
     noStroke();
-    fill(color(232,22,22));                 
+    fill(color(22,22,232));                 
     circle(target.x, target.y, target.w);
-    
-    
-    // Remember you are allowed to access targets (i-1) and (i+1)
-    // if this is the target the user should be trying to select
-    //
+  }
+  else {
+    if(trials[current_trial] === i) 
+    { 
+      // Highlights the target the user should be trying to select
+      // with a white border
+      //CHANGE 1 - stroke color (white -> red)
+      //stroke(color(232,22,22));
+      //CHANGE 2 - stroke weight (2 -> 5)
+      //strokeWeight(5);
+
+      //CHANGE 4 - current target color (white -> red)
+      noStroke();
+      fill(color(232,22,22));                 
+      circle(target.x, target.y, target.w);
+
+
+      // Remember you are allowed to access targets (i-1) and (i+1)
+      // if this is the target the user should be trying to select
+      //
+    }
+    else if(trials[current_trial + 1] === i) {
+      noStroke();
+      fill(color(232,232,22));                 
+      circle(target.x, target.y, target.w);
+    }
+    else 
+    {
+      //noStroke();          
+      noStroke();
+      // Draws the target
+      // CHANGE 3 - target color (gray -> white)
+      fill(color(245,245,245));                 
+      circle(target.x, target.y, target.w);
+    }
   }
   // Does not draw a border if this is not the target the user
   // should be trying to select
-  else 
-  {//noStroke();          
-
-  // Draws the target
-  // CHANGE 3 - target color (gray -> white)
-  fill(color(245,245,245));                 
-  circle(target.x, target.y, target.w);
-  }
+  
 }
 
 // Returns the location and size of a given target
@@ -254,6 +272,9 @@ function continueTest()
   // Shows the targets again
   draw_targets = true;
   testStartTime = millis();  
+    
+  //CHANGE frame_color back to black
+  frame_color = begin_color;
 }
 
 // Is invoked when the canvas is resized (e.g., when we go fullscreen)
