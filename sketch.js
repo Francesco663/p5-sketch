@@ -79,9 +79,12 @@ function draw()
     let y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height)
     
     //CHANGE 5 - virtaul cursor color (white -> blue)
-    noStroke();
-    fill(color(22,22,232));
-    circle(x, y, 0.5 * PPCM);
+    let crosshairSize = 0.25 * PPCM;
+    
+    stroke(color(22,22,232));
+    strokeWeight(2);
+    line(x - crosshairSize ,y - crosshairSize, x + crosshairSize, y + crosshairSize);
+    line(x + crosshairSize, y - crosshairSize , x - crosshairSize, y + crosshairSize);
     
   }
 }
