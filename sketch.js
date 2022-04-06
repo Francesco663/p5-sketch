@@ -29,8 +29,8 @@ let current_trial    = 0;      // the current trial number (indexes into trials 
 let attempt          = 0;      // users complete each test twice to account for practice (attemps 0 and 1)
 let fitts_IDs        = [];     // add the Fitts ID for each selection here (-1 when there is a miss)
 
-let hit_color = (0, 51, 25);
-let miss_color = (51, 0, 0);
+let hit_color = (0, 51, 51);
+let miss_color = (151, 0, 0);
 let begin_color = (0, 0, 0);
 let frame_color = begin_color;
 
@@ -166,8 +166,8 @@ function mousePressed()
       let virtual_x = map(mouseX, inputArea.x, inputArea.x + inputArea.w, 0, width)
       let virtual_y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height)
 
-      if (dist(target.x, target.y, virtual_x, virtual_y) < target.w/2) hits++;
-      else misses++;
+      if (dist(target.x, target.y, virtual_x, virtual_y) < target.w/2){frame_color = hit_color; hits++;}
+      else {frame_color = miss_color; misses++;}
       
       current_trial++;                 // Move on to the next trial/target
     }
