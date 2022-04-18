@@ -426,12 +426,13 @@ function drawInputArea()
   fill('rgb(255,255,255)');
   text(" =  next target", inputArea.x + 50 , inputArea.y - 138);
   
-  text(" ATTENTION! Only click when target turns  =  ", inputArea.x , inputArea.y - 180);
+  text(" ATTENTION! Only click when target turns  =  ", inputArea.x - 5 , inputArea.y - 250);
+  text("ADVICE : hold mouse firmly for more accuracy", inputArea.x , inputArea.y - 200);
   
   stroke('rgb(255,255,255)');
   strokeWeight(4);
   fill('rgb(0,150,0)');
-  circle(inputArea.x + 392, inputArea.y - 187, 40);
+  circle(inputArea.x + 392, inputArea.y - 256, 40);
   
   
   
@@ -483,7 +484,17 @@ function drawTargetInsideInputArea(i){
   }
 
   strokeWeight(3);
-  circle(x, y, size-4);
+  
+  rectMode(CENTER)
+  rect(x,y,size-5,size-5)
+  rectMode(CORNER)
+  
+  noFill();
+  stroke('rgb(255,255,255)');
+  strokeWeight(2);
+  rectMode(CENTER)
+  rect(x+0.8,y+0.8,size-18,size-18)
+  rectMode(CORNER)
   
   
 }
@@ -514,6 +525,10 @@ function DrawInputLines(){
   line(x_prev, y_prev, x_cur, y_cur);
   
 }
+
+
+
+
 
 
 
