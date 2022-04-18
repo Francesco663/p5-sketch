@@ -201,17 +201,36 @@ function mousePressed()
   }
 }
 
+
+// Detect if the mouse hovers target
+function mouse_hovers(tx, ty, cx, cy) {
+  let d = dist(tx,ty,cx,cy);
+  if (d < (TARGET_PADDING / 2))
+    return true;
+  return false;
+}
+
+
+
+
+
 // Draw target on-screen
 function drawTarget(i)
 {
   // Get the location and size for target (i)
-  let target = getTargetBounds(i);             
+  let target = getTargetBounds(i);
+  
+  let virtual_x = map(mouseX, inputArea.x, inputArea.x + inputArea.w, 0, width);
+  let virtual_y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height);
 
   // Check whether this target is the target the user should be trying to select
   if(trials[current_trial] === i && trials[current_trial + 1] === i) {
     stroke('rgb(255,255,255)');
-    strokeWeight(4);
-    fill(color(22,22,232));                 
+    if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
+        fill('rgb(0,0,150)');
+      else
+        fill('rgb(22,22,232)');
+    strokeWeight(4);                 
     circle(target.x, target.y, target.w);
   }
   else {
@@ -223,12 +242,16 @@ function drawTarget(i)
       //stroke(color(232,22,22));
       //CHANGE 2 - stroke weight (2 -> 5)
       //strokeWeight(5);
-
-      //CHANGE 4 - current target color (white -> red)
+      
       stroke('rgb(255,255,255)');
+      
+      if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
+        fill('rgb(140,0,0)');
+      else
+        fill('rgb(232,22,22)');
       strokeWeight(4);
-      fill(color(232,22,22));                 
       circle(target.x, target.y, target.w);
+      
 
 
       // Remember you are allowed to access targets (i-1) and (i+1)
@@ -412,7 +435,7 @@ function drawInputArea()
 }
 
 
-/*function drawInputTable(){
+function drawInputTable(){
   let d1 = 160;
   let d2 = 100
   let w = 540;
@@ -423,4 +446,4 @@ function drawInputArea()
   strokeWeight(2);
   
   rect(inputArea.x + d1, inputArea.y + d2, inputArea.w - w, inputArea.h - h);
-}*/
+}
