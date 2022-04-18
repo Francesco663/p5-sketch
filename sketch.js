@@ -210,7 +210,7 @@ function drawTarget(i)
   // Check whether this target is the target the user should be trying to select
   if(trials[current_trial] === i && trials[current_trial + 1] === i) {
     stroke('rgb(255,255,255)');
-    strokeWeight(3);
+    strokeWeight(4);
     fill(color(22,22,232));                 
     circle(target.x, target.y, target.w);
   }
@@ -226,7 +226,7 @@ function drawTarget(i)
 
       //CHANGE 4 - current target color (white -> red)
       stroke('rgb(255,255,255)');
-      strokeWeight(3);
+      strokeWeight(4);
       fill(color(232,22,22));                 
       circle(target.x, target.y, target.w);
 
@@ -270,6 +270,7 @@ function drawLines()
   stroke('#98BF64');
   strokeWeight(3);
   line(current_target.x, current_target.y, next_target.x, next_target.y);
+  
 
   if( current_trial > 0){
     drawArrow(previous_target, current_target);
@@ -294,6 +295,7 @@ function drawArrow(base, dest)
   triangle(-offset*0.15, offset/3, offset*0.15, offset/3, 0, -offset/40); 
   //draws the arrow point as a triangle //
   pop();
+  
 }
 
 
@@ -370,7 +372,7 @@ function drawInputArea()
 {
   
   stroke('rgb(255,255,255)');
-  strokeWeight(3);
+  strokeWeight(4);
   fill(color(22,22,232));
   circle(inputArea.x + 20, inputArea.y - 40, 40);
   
@@ -381,7 +383,7 @@ function drawInputArea()
   
   
   stroke('rgb(255,255,255)');
-  strokeWeight(3);
+  strokeWeight(4);
   fill('rgb(232,22,22)');
   circle(inputArea.x + 20, inputArea.y - 92, 40);
   
@@ -411,14 +413,14 @@ function drawInputArea()
 
 
 /*function drawInputTable(){
-  let d1 = 50;
-  let d2 = 40
-  let w = 190;
-  let h = 60;
+  let d1 = 160;
+  let d2 = 100
+  let w = 540;
+  let h = 90;
   
   noFill();
   stroke(color(220,220,220));
   strokeWeight(2);
   
-  rect(inputArea.x + d2, inputArea.y + d1, inputArea.w - w, inputArea.h - h);
+  rect(inputArea.x + d1, inputArea.y + d2, inputArea.w - w, inputArea.h - h);
 }*/
