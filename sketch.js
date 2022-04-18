@@ -78,13 +78,12 @@ function draw()
     let x = map(mouseX, inputArea.x, inputArea.x + inputArea.w, 0, width)
     let y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height)
     
-    //CHANGE 5 - virtaul cursor color (white -> blue)
+    //CHANGE 5 - virtaul cursor color (white -> green)
     let crosshairSize = 0.25 * PPCM;
     
-    stroke(color(22,22,232));
-    strokeWeight(2);
-    line(x - crosshairSize ,y - crosshairSize, x + crosshairSize, y + crosshairSize);
-    line(x + crosshairSize, y - crosshairSize , x - crosshairSize, y + crosshairSize);
+    noStroke();
+    fill('rgb(255,255,255)');
+    circle(x, y, 0.5 * PPCM);
     
   }
 }
@@ -210,7 +209,8 @@ function drawTarget(i)
 
   // Check whether this target is the target the user should be trying to select
   if(trials[current_trial] === i && trials[current_trial + 1] === i) {
-    noStroke();
+    stroke('rgb(255,255,255)');
+    strokeWeight(3);
     fill(color(22,22,232));                 
     circle(target.x, target.y, target.w);
   }
@@ -225,7 +225,8 @@ function drawTarget(i)
       //strokeWeight(5);
 
       //CHANGE 4 - current target color (white -> red)
-      noStroke();
+      stroke('rgb(255,255,255)');
+      strokeWeight(3);
       fill(color(232,22,22));                 
       circle(target.x, target.y, target.w);
 
@@ -245,14 +246,59 @@ function drawTarget(i)
       noStroke();
       // Draws the target
       // CHANGE 3 - target color (gray -> white)
-      fill(color(245,245,245));                 
+      fill('rgb(220,220,220)');                 
       circle(target.x, target.y, target.w);
     }
   }
   // Does not draw a border if this is not the target the user
   // should be trying to select
   
+  drawLines();
+  //drawInputTable();//
+  
 }
+
+
+// Draw lines connecting targets
+function drawLines()
+{
+  
+  let current_target = getTargetBounds(trials[current_trial]);
+  let next_target = getTargetBounds(trials[current_trial + 1]);
+  let previous_target = getTargetBounds(trials[current_trial - 1]);
+
+  stroke('#98BF64');
+  strokeWeight(3);
+  line(current_target.x, current_target.y, next_target.x, next_target.y);
+
+  if( current_trial > 0){
+    drawArrow(previous_target, current_target);
+  }
+  
+
+}
+
+function drawArrow(base, dest)
+{
+  var offset = dest.w;
+  stroke('rgb(0,255,0)');
+  strokeWeight(3);
+  line(base.x, base.y, dest.x, dest.y);
+
+  push() //start new drawing state
+  var angle = atan2(base.y - dest.y, base.x - dest.x); //gets the angle of the line
+  translate(dest.x, dest.y); //translates to the destination vertex
+  rotate(angle + 4.71239);
+
+  fill('rgb(0,255,0)');
+  triangle(-offset*0.15, offset/3, offset*0.15, offset/3, 0, -offset/40); 
+  //draws the arrow point as a triangle //
+  pop();
+}
+
+
+
+
 
 // Returns the location and size of a given target
 function getTargetBounds(i)
@@ -322,9 +368,57 @@ function windowResized()
 // Responsible for drawing the input area
 function drawInputArea()
 {
+  
+  stroke('rgb(255,255,255)');
+  strokeWeight(3);
+  fill(color(22,22,232));
+  circle(inputArea.x + 20, inputArea.y - 40, 40);
+  
+  noStroke()
+  fill('rgb(255,255,255)');
+  text(" =  click 2x", inputArea.x + 50 , inputArea.y - 32);
+  
+  
+  
+  stroke('rgb(255,255,255)');
+  strokeWeight(3);
+  fill('rgb(232,22,22)');
+  circle(inputArea.x + 20, inputArea.y - 92, 40);
+  
+  noStroke()
+  fill('rgb(255,255,255)');
+  text(" =  click 1x", inputArea.x + 50 , inputArea.y - 85);
+  
+  
+  
+  noStroke();
+  fill('rgb(232,232,22)');
+  circle(inputArea.x + 20, inputArea.y - 145, 40);
+  
+  noStroke()
+  fill('rgb(255,255,255)');
+  text(" =  next target", inputArea.x + 50 , inputArea.y - 138);
+  
+  
+  
+  
   noFill();
   stroke(color(220,220,220));
   strokeWeight(2);
   
   rect(inputArea.x, inputArea.y, inputArea.w, inputArea.h);
 }
+
+
+/*function drawInputTable(){
+  let d1 = 50;
+  let d2 = 40
+  let w = 190;
+  let h = 60;
+  
+  noFill();
+  stroke(color(220,220,220));
+  strokeWeight(2);
+  
+  rect(inputArea.x + d2, inputArea.y + d1, inputArea.w - w, inputArea.h - h);
+}*/
