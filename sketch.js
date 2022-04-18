@@ -227,7 +227,7 @@ function drawTarget(i)
   if(trials[current_trial] === i && trials[current_trial + 1] === i) {
     stroke('rgb(255,255,255)');
     if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
-        fill('rgb(0,0,150)');
+        fill('rgb(0,150,0)');
       else
         fill('rgb(22,22,232)');
     strokeWeight(4);                 
@@ -246,7 +246,7 @@ function drawTarget(i)
       stroke('rgb(255,255,255)');
       
       if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
-        fill('rgb(140,0,0)');
+        fill('rgb(0,150,0)');
       else
         fill('rgb(232,22,22)');
       strokeWeight(4);
@@ -277,7 +277,9 @@ function drawTarget(i)
   // should be trying to select
   
   drawLines();
-  //drawInputTable();//
+  
+  drawTargetInsideInputArea(i);
+  DrawInputLines();
   
 }
 
@@ -424,6 +426,14 @@ function drawInputArea()
   fill('rgb(255,255,255)');
   text(" =  next target", inputArea.x + 50 , inputArea.y - 138);
   
+  text(" ATTENTION! Only click when target turns  =  ", inputArea.x , inputArea.y - 180);
+  
+  stroke('rgb(255,255,255)');
+  strokeWeight(4);
+  fill('rgb(0,150,0)');
+  circle(inputArea.x + 392, inputArea.y - 187, 40);
+  
+  
   
   
   
@@ -435,15 +445,77 @@ function drawInputArea()
 }
 
 
-function drawInputTable(){
-  let d1 = 160;
-  let d2 = 100
-  let w = 540;
-  let h = 90;
+function drawTargetInsideInputArea(i){
+  target = getTargetBounds(i);
+
   
-  noFill();
-  stroke(color(220,220,220));
-  strokeWeight(2);
+  let virtual_x = map(mouseX, inputArea.x, inputArea.x + inputArea.w, 0, width);
+  let virtual_y = map(mouseY, inputArea.y, inputArea.y + inputArea.h, 0, height);
   
-  rect(inputArea.x + d1, inputArea.y + d2, inputArea.w - w, inputArea.h - h);
+  x = map(target.x, 0, width, inputArea.x, inputArea.x + inputArea.w);
+  y = map(target.y, 0, height, inputArea.y, inputArea.y + inputArea.h);
+
+  size = target.w * (inputArea.w / height);
+  
+  noStroke();
+  fill('rgb(220,220,220)');
+
+  if (trials[current_trial] === i) {
+    
+    stroke('rgb(255,255,255)');
+    strokeWeight(2);
+    if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
+        fill('rgb(0,150,0)');
+    else
+        fill('rgb(232,22,22)');
+    
+    if (trials[current_trial + 1] === i) {
+      stroke('rgb(255,255,255)');
+      if (mouse_hovers(virtual_x, virtual_y, target.x, target.y))
+        fill('rgb(0,150,0)');
+      else
+        fill('rgb(22,22,232)');
+    }
+  }
+  else if (trials[current_trial + 1] === i) {
+    noStroke();
+    fill('rgb(232,232,22)');
+  }
+
+  strokeWeight(3);
+  circle(x, y, size-4);
+  
+  
 }
+
+
+function DrawInputLines(){
+  
+  let current_target = getTargetBounds(trials[current_trial]);
+  let next_target = getTargetBounds(trials[current_trial + 1]);
+  let previous_target = getTargetBounds(trials[current_trial - 1]);
+  
+  x_cur = map(current_target.x, 0, width, inputArea.x, inputArea.x + inputArea.w);
+  y_cur = map(current_target.y, 0, height, inputArea.y, inputArea.y + inputArea.h);
+  
+  x_next = map(next_target.x, 0, width, inputArea.x, inputArea.x + inputArea.w);
+  y_next = map(next_target.y, 0, height, inputArea.y, inputArea.y + inputArea.h);
+  
+  x_prev = map(previous_target.x, 0, width, inputArea.x, inputArea.x + inputArea.w);
+  y_prev = map(previous_target.y, 0, height, inputArea.y, inputArea.y + inputArea.h);
+  
+  
+  stroke('#98BF64');
+  strokeWeight(2);
+  line(x_cur, y_cur, x_next, y_next);
+  
+  stroke('rgb(0,255,0)');
+  strokeWeight(2);
+  line(x_prev, y_prev, x_cur, y_cur);
+  
+}
+
+
+
+
+
